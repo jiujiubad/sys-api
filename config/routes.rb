@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
    namespace :api, :defaults => { :format => :json } do
      namespace :v1 do
+       get "/reservations" => "reservations#index", :as => :reservations
        get "/trains"  => "trains#index", :as => :trains
        get "/trains/:train_number" => "trains#show", :as => :train
 

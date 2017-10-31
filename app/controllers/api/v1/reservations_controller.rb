@@ -1,4 +1,21 @@
  class Api::V1::ReservationsController < ApiController
+     before_action :authenticate_user!, :only => [:index] # 这会检查 index +这个操作一定要登入
+
+     def index
+       @reservations = current_user.reservations
+
+       render :json => {
+         :data => @reservations.map { |reservation|
+           {
+             :booking_code => reservation.booking_code,
+             :train_number => reservation.train.number,
+             :seat_number => reservation.seat_number,
+             :customer_name => reservation.customer_name,
+             :customer_phone => reservation.customer_phone
+           }
+         }
+       }
+     end
 
   def create
     @train = Train.find_by_number!( params[:train_number] )
